@@ -1,7 +1,7 @@
 package com.aksigorta.timesheet.model;
 
 import jakarta.persistence.*;
-import lombok.Data; // Lombok'tan gelen @Data anotasyonu
+import lombok.Data;
 
 @Data // Getter, Setter, toString, EqualsAndHashCode metotlarını otomatik oluşturur.
 @Entity // Bu sınıfın bir veritabanı tablosuna karşılık geldiğini belirtir.

@@ -22,8 +22,8 @@ public class Timesheet {
 
     private String description;
 
-    // Bu anotasyon, Timesheet ve User arasındaki ilişkiyi kurar.
-    // Birçok timesheet girişi tek bir kullanıcıya ait olabilir.
+
+    // Birçok timesheet girişi tek bir kullanıcıya ait olabilir
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false) // timesheets tablosunda user_id adında bir sütun oluşturur.
     private User user;

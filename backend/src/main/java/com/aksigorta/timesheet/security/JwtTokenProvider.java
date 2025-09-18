@@ -1,52 +1,83 @@
 package com.aksigorta.timesheet.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey; // Bu import önemli!
+import java.security.Key; // Bu import önemli!
 import java.util.Date;
 
-@Component // Bu sınıfın bir Spring bileşeni olduğunu ve başka sınıflara enjekte edilebileceğini belirtir.
+@Component
 public class JwtTokenProvider {
 
-    // application.properties'den gizli anahtarı okur.
-    @Value("${app.jwt-secret}")
-    private String jwtSecret;
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-    // application.properties'den geçerlilik süresini okur.
+    @Value("${app.jwt-secret}")
+    private String jwtSecretString;
+
     @Value("${app.jwt-expiration-milliseconds}")
     private int jwtExpirationInMs;
 
-    // Kimliği doğrulanmış kullanıcı için bir JWT üretir.
-    public String generateToken(Authentication authentication) {
-        // Kimliği doğrulanmış kullanıcının adını al.
-        String username = authentication.getName();
+    // Bu, bizim güvenli anahtar nesnemiz olacak.
+    private SecretKey key;
 
+    // Sınıf oluşturulduktan hemen sonra bu metot çalışır ve String'den güvenli Key nesnesini oluşturur.
+    @jakarta.annotation.PostConstruct
+    public void init() {
+        byte[] keyBytes = Decoders.BASE64.decode(this.jwtSecretString);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    // Token üretme metodu, artık String yerine Key nesnesini kullanacak.
+    public String generateToken(Authentication authentication) {
+        String username = authentication.getName();
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
-        // JWT'yi oluşturma süreci
         return Jwts.builder()
-                .setSubject(username) // JWT'nin kime ait olduğunu ayarla
-                .setIssuedAt(new Date()) // Ne zaman oluşturulduğunu ayarla
-                .setExpiration(expiryDate) // Son kullanma tarihini ayarla
-                .signWith(SignatureAlgorithm.HS256, jwtSecret) // Özel damgamız (imza) ile mühürle
-                .compact(); // Her şeyi birleştirip String olarak döndür.
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(key) // DEĞİŞİKLİK BURADA: Artık doğrudan Key nesnesini kullanıyoruz.
+                .compact();
     }
 
-    // --- BU METOTLARI 6. GÜNDE KULLANACAĞIZ, ŞİMDİLİK BOŞ DURABİLİRLER ---
-
-    // Gelen bir JWT'den kullanıcı adını okur.
+    // Token doğrulama metotları da artık String yerine Key nesnesini kullanacak.
     public String getUsernameFromJWT(String token) {
-        // TODO: Burayı 6. günde dolduracağız.
-        return null;
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(key) // DEĞİŞİKLİK BURADA
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
     }
 
-    // Gelen bir JWT'nin geçerli olup olmadığını (imzası doğru mu, süresi dolmuş mu) kontrol eder.
     public boolean validateToken(String authToken) {
-        // TODO: Burayı 6. günde dolduracağız.
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authToken); // DEĞİŞİKLİK BURADA
+            return true;
+        } catch (SignatureException ex) {
+            logger.error("Invalid JWT signature");
+        } catch (MalformedJwtException ex) {
+            logger.error("Invalid JWT token");
+        } catch (ExpiredJwtException ex) {
+            logger.error("Expired JWT token");
+        } catch (UnsupportedJwtException ex) {
+            logger.error("Unsupported JWT token");
+        } catch (IllegalArgumentException ex) {
+            logger.error("JWT claims string is empty.");
+        }
         return false;
     }
 }

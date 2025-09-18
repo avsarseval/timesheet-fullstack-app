@@ -34,10 +34,8 @@ public class AuthController {
     }
 
     // "/api/auth" ile "/register" birleşir ve tam adres "/api/auth/register" olur.
-    // @PostMapping: Bu metodun sadece POST isteklerini dinleyeceğini söyler.
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
-        // @RequestBody: Gelen JSON verisini bir User nesnesine dönüştürür.
         User registeredUser = userService.registerUser(user);
         return ResponseEntity.ok(registeredUser); // Başarılı olursa, kaydedilen kullanıcıyı geri döner.
     }
@@ -53,7 +51,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Kimlik doğrulama başarılı, şimdi JWT basma zamanı!
+        // Kimlik doğrulama başarılıysa jwt
         String token = jwtTokenProvider.generateToken(authentication);
 
         // Cevap olarak token'ı içeren AuthResponse nesnesini dön.
