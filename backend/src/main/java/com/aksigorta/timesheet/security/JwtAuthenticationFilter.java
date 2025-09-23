@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-// NOT: Tüm "javax.servlet" import'ları "jakarta.servlet" olarak güncellendi.
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -30,10 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    /**
-     * Bu metot, projemize gelen her bir istek için SADECE BİR KEZ çalışır.
-     * Görevi, istekte geçerli bir JWT olup olmadığını kontrol etmektir.
-     */
+    // istekte geçerli jwt var mı oma bakıyor
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -43,7 +39,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = getJwtFromRequest(request);
 
             // 2. JWT'nin var olup olmadığını VE geçerli olup olmadığını kontrol et.
-            //    tokenProvider.validateToken() metodu imza, son kullanma tarihi gibi kontrolleri yapar.
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 // 3. Token geçerliyse, içinden kullanıcı adını (username) al.
                 String username = tokenProvider.getUsernameFromJWT(jwt);
@@ -52,7 +47,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
                 // 5. Spring Security'nin anlayacağı bir "Authentication" nesnesi oluştur.
-                //    Bu, "Bu kullanıcıyı tanıdık ve sisteme giriş yapmış sayıyoruz" demektir.
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
 
@@ -63,7 +57,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception ex) {
-            // Bir hata oluşursa, bunu logla.
             logger.error("Could not set user authentication in security context", ex);
         }
 
@@ -71,12 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    /**
-     * Gelen isteğin "Authorization" başlığından JWT'yi çıkaran yardımcı bir metot.
-     * Token genellikle "Bearer <token>" formatında gelir.
-     * @param request Gelen HTTP isteği
-     * @return Sadece token kısmı veya bulunamazsa null.
-     */
+
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {

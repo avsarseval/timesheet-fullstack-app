@@ -8,9 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList; // Boş yetki listesi için
-
-@Service // Bu sınıfın bir Spring servisi olduğunu belirtir.
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -20,15 +18,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    // Spring Security, bir kullanıcıyı doğrulamak için BU metodu çağırır.
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 1. Bizim UserRepository'mizi kullanarak veritabanından kullanıcıyı bul.
+        // 1. Veritabanından kullanıcıyı, bizim UserRepository'mizi kullanarak bul.
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
-        // 2. Bizim User nesnemizi, Spring Security'nin anladığı UserDetails nesnesine dönüştür.
-        // Şimdilik rolleri/yetkileri boş bir liste olarak veriyoruz.
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
+        // 2. Bulunan User entity'sini, hem Spring Security'nin standartlarını karşılayan
+        //    hem de bizim User nesnemizin tamamını içinde taşıyan özel CustomUserDetails
+        //    kapsülümüze koyarak geri döndür.
+        return new CustomUserDetails(user);
     }
 }

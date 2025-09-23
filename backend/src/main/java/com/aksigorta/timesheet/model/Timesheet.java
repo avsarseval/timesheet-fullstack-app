@@ -7,18 +7,18 @@ import java.time.LocalTime;
 
 @Data
 @Entity
-@Table(name = "timesheets")
+@Table(name = "timesheets") //çoğul olmamalı
 public class Timesheet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate date; // Tarih (YYYY-MM-DD)
+    private LocalDate date;
 
-    private LocalTime startTime; // Başlangıç saati (HH:MM:SS)
+    private LocalTime startTime;
 
-    private LocalTime endTime; // Bitiş saati (HH:MM:SS)
+    private LocalTime endTime;
 
     private String description;
 

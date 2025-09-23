@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey; // Bu import önemli!
-import java.security.Key; // Bu import önemli!
 import java.util.Date;
 
 @Component
@@ -29,7 +28,7 @@ public class JwtTokenProvider {
     @Value("${app.jwt-expiration-milliseconds}")
     private int jwtExpirationInMs;
 
-    // Bu, bizim güvenli anahtar nesnemiz olacak.
+
     private SecretKey key;
 
     // Sınıf oluşturulduktan hemen sonra bu metot çalışır ve String'den güvenli Key nesnesini oluşturur.
@@ -49,14 +48,13 @@ public class JwtTokenProvider {
                 .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(key) // DEĞİŞİKLİK BURADA: Artık doğrudan Key nesnesini kullanıyoruz.
+                .signWith(key)
                 .compact();
     }
 
-    // Token doğrulama metotları da artık String yerine Key nesnesini kullanacak.
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key) // DEĞİŞİKLİK BURADA
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -65,7 +63,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authToken); // DEĞİŞİKLİK BURADA
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authToken);
             return true;
         } catch (SignatureException ex) {
             logger.error("Invalid JWT signature");

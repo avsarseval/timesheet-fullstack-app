@@ -5,10 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
-@Repository // Bu arayüzün bir Spring veritabanı bileşeni olduğunu belirtir
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> { //extend edince springden temel db metotları gelir
-    // <User, Long> şu anlama gelir: "Ben User nesneleri ile çalışacağım
-    // ve onların ID'si Long tipindedir."
     Optional<User> findByUsername(String username);
 }
 
