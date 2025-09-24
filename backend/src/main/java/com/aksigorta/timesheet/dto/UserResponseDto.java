@@ -1,7 +1,6 @@
 package com.aksigorta.timesheet.dto;
 
-// Sadece dış dünyanın görmesini istediğimiz alanları içerir.
-public record UserDto(
+public record UserResponseDto(
         Long id,
         String username,
         String email,

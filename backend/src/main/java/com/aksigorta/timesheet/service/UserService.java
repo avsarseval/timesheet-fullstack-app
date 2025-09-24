@@ -1,11 +1,10 @@
 package com.aksigorta.timesheet.service;
 
-import com.aksigorta.timesheet.model.User;
-import com.aksigorta.timesheet.dto.UserDto;
+import com.aksigorta.timesheet.dto.UserRegisterRequestDto;
+import com.aksigorta.timesheet.dto.UserResponseDto;
 
 public interface UserService {
 
-    User registerUser(User user);
-    UserDto convertToDto(User user);
 
+    UserResponseDto registerUser(UserRegisterRequestDto requestDto);
 }

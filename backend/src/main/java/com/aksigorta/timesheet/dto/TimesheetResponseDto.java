@@ -3,7 +3,7 @@ package com.aksigorta.timesheet.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record TimesheetDto(
+public record TimesheetResponseDto(
         Long id,
         LocalDate date,
         LocalTime startTime,
