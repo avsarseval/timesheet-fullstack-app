@@ -1,0 +1,18 @@
+// timesheet-form.component.scss'ten kopyaladığımız temel stiller
+@import '../../../styles/form-styles.scss';
+
+// Bu sayfaya özel eklemeler
+.form-footer {
+  text-align: center;
+  margin-top: 20px;
+
+  a {
+    color: #e53935; // Temamızın ana rengi
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

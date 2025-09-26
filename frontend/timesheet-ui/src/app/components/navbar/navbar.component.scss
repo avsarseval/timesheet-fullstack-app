@@ -1,0 +1,41 @@
+$primary-color: #e53935; // Temamızın kırmızı rengi
+$navbar-bg: #ffffff;
+$text-color: #333;
+$active-link-color: $primary-color;
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $navbar-bg;
+  padding: 10px 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px; /* Menü ile içerik arasına boşluk koyar */
+}
+
+.navbar-brand .navbar-logo {
+  color: $primary-color;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.navbar-links a {
+  color: $text-color;
+  text-decoration: none;
+  padding: 10px 15px;
+  margin: 0 5px;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+.navbar-links a.active-link {
+  color: $active-link-color;
+  font-weight: 600;
+}
