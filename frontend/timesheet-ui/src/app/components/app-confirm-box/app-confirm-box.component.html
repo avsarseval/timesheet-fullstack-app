@@ -1,0 +1,12 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="dialog-box" (click)="$event.stopPropagation()">
+    <div class="dialog-content">
+      <h2>Onay</h2>
+      <p>{{ message }}</p>
+    </div>
+    <div class="dialog-actions">
+      <button class="cancel-btn" (click)="onCancel()">Hayır, İptal Et</button>
+      <button class="confirm-btn" (click)="onConfirm()">Evet, Sil</button>
+    </div>
+  </div>
+</div>

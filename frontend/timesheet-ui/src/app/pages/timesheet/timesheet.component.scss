@@ -1,0 +1,97 @@
+// src/app/pages/timesheet/timesheet.component.scss
+
+// 1. Değişkenler dosyasını buraya da import ediyoruz.
+@import '../../../styles/variables';
+
+.list-container {
+  max-width: 1200px;
+  margin: 2rem auto; // Üst/alt ve yanlardan otomatik boşluk (ortalamak için)
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  background-color: $background-white;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $border-color-light;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: $text-color-dark;
+}
+
+.header button {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 4px;
+  background-color: $primary-color;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.header button:hover {
+  background-color: $primary-color-dark;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+thead th {
+  color: $text-color-muted;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  background-color: #fafafa;
+}
+
+tbody tr:hover {
+  background-color: $background-light;
+}
+
+tbody td {
+  color: $text-color-light;
+}
+td.actions {
+  display: flex;
+  gap: 10px; // Butonlar arasına boşluk koyar
+
+  button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  .edit-btn {
+    background-color: #1e88e5; // Mavi
+  }
+
+  .delete-btn {
+    background-color: #e53935; // Kırmızı
+  }
+}

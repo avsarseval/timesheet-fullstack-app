@@ -1,0 +1,106 @@
+/* --- Değişkenler --- */
+$primary-color: #e53935;
+$border-color: #ddd;
+$container-bg: #fff;
+$text-color: #333;
+
+/* --- Modal Davranışı İçin Ana Stiller --- */
+
+// Tüm ekranı kaplayan yarı saydam arka plan
+.modal-overlay {
+  position: fixed; // <-- EN ÖNEMLİ KURAL: Sayfa akışından çıkarır.
+  top: 0;
+  left: 0;
+  width: 100vw; // Ekran genişliğinin %100'ü
+  height: 100vh; // Ekran yüksekliğinin %100'ü
+  background-color: rgba(0, 0, 0, 0.6); // Siyah, %60 saydamlıkta
+
+  // İçindeki form konteynerini ortalamak için:
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000; // Diğer her şeyin üzerinde görünmesini sağlar
+}
+
+// Kapatma butonu ('x')
+.close-button {
+  position: absolute; // form-container'a göre konumlanır
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+
+  &:hover {
+    color: #333;
+  }
+}
+
+
+/* --- Mevcut Form Stilleriniz (modal-overlay'e göre ayarlanmış) --- */
+
+.form-container {
+  position: relative; // Kapatma butonunun konumlanması için gerekli
+  background-color: $container-bg;
+  padding: 25px 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+
+  h2 {
+    color: $text-color;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+}
+
+.form-group {
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: $text-color;
+  }
+
+  input[type="date"],
+  input[type="time"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: $primary-color;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}

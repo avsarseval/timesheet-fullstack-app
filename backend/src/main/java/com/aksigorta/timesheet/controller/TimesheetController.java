@@ -5,6 +5,7 @@ import com.aksigorta.timesheet.model.User;
 import com.aksigorta.timesheet.security.CustomUserDetails;
 import com.aksigorta.timesheet.service.TimesheetService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.aksigorta.timesheet.dto.TimesheetResponseDto;
@@ -28,9 +29,9 @@ public class TimesheetController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createTimesheet(@RequestBody TimesheetCreateRequestDto requestDto, Authentication authentication) {
+    public ResponseEntity<TimesheetResponseDto> createTimesheet(@RequestBody TimesheetCreateRequestDto requestDto, Authentication authentication) {
         TimesheetResponseDto responseDto = timesheetService.createTimesheet(requestDto, getCurrentUser(authentication));
-        return ResponseEntity.ok("Timesheet created successfully!");
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping

@@ -1,0 +1,68 @@
+$primary-color: #e53935; // Silme butonu için
+$default-color: #f4f5f7;
+$text-color: #333;
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; // Form modal'ından daha yukarıda olabilir
+}
+
+.dialog-box {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.dialog-content {
+  h2 {
+    margin-top: 0;
+    color: $text-color;
+  }
+  p {
+    color: #555;
+    line-height: 1.6;
+  }
+}
+
+.dialog-actions {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .cancel-btn {
+    background-color: $default-color;
+    border: 1px solid #ddd;
+    color: $text-color;
+  }
+
+  .confirm-btn {
+    background-color: $primary-color;
+    color: white;
+  }
+}

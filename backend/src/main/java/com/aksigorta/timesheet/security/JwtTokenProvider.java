@@ -12,7 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+import java.util.stream.Collectors;
+import java.util.List;
 
 import javax.crypto.SecretKey; // Bu import önemli!
 import java.util.Date;
@@ -34,6 +37,12 @@ public class JwtTokenProvider {
     // Sınıf oluşturulduktan hemen sonra bu metot çalışır ve String'den güvenli Key nesnesini oluşturur.
     @jakarta.annotation.PostConstruct
     public void init() {
+        System.out.println("YÜKLENEN GİZLİ ANAHTAR: '" + this.jwtSecretString + "'");
+
+        if (this.jwtSecretString == null || this.jwtSecretString.trim().isEmpty()) {
+            System.err.println("UYARI: app.jwt-secret ORTAM DEĞİŞKENİ YÜKLENEMEDİ VEYA BOŞ!");
+        }
+
         byte[] keyBytes = Decoders.BASE64.decode(this.jwtSecretString);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -43,9 +52,14 @@ public class JwtTokenProvider {
         String username = authentication.getName();
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+        List<String> roles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
 
         return Jwts.builder()
                 .setSubject(username)
+                .claim("roles", roles)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key)

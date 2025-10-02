@@ -1,0 +1,19 @@
+// src/styles.scss
+
+// 1. Değişkenlerimizi projenin her yerinde kullanılabilir hale getiriyoruz.
+@import '../styles/variables';
+
+// 2. Sayfanın temel görünümünü ayarlıyoruz.
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+// 3. Ana içerik alanını tanımlıyoruz.
+main {
+  padding: 0 2rem; // Kenarlardan boşluk bırak
+}

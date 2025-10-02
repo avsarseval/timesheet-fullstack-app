@@ -1,0 +1,60 @@
+<div class="register-wrapper">
+  <div class="form-container">
+    <h2>Kayıt Ol</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label for="username">Kullanıcı Adı</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          placeholder="kullaniciadi"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-posta</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="ornek@gmail.com"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Şifre</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="••••••••"
+          required
+
+        />
+      </div>
+      @if (passwordTouched) {
+        <div class="password-rules">
+          <ul>
+            <!-- Her bir kural için bir liste elemanı -->
+            <!-- [ngClass] ile kural karşılandığında 'valid' class'ı ekliyoruz -->
+            <li [ngClass]="{'valid': hasMinLength}">En az 8 karakter</li>
+            <li [ngClass]="{'valid': hasUpperCase}">En az bir büyük harf</li>
+            <li [ngClass]="{'valid': hasLowerCase}">En az bir küçük harf</li>
+            <li [ngClass]="{'valid': hasDigit}">En az bir rakam</li>
+            <li [ngClass]="{'valid': hasSymbol}">En az bir sembol (!@#$%^&*)</li>
+          </ul>
+        </div>
+      }
+      <button type="submit" [disabled]="registerForm.invalid">Kayıt Ol</button>
+
+      <div class="form-footer">
+        <p>Zaten bir hesabın var mı? <a routerLink="/login">Giriş Yap</a></p>
+      </div>
+
+    </form>
+  </div>
+</div>

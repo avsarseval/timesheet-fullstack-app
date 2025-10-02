@@ -1,0 +1,40 @@
+<!-- Dışarıdaki gri alana tıklandığında modal kapanır -->
+<div class="modal-overlay" (click)="onClose()">
+
+  <!-- Formun kendisine tıklandığında kapanmayı engeller -->
+  <div class="form-container" (click)="$event.stopPropagation()">
+    <!-- ... -->
+    <!-- Başlığı dinamik yapalım -->
+    <h2>{{ isEditMode ? 'Zaman Girişini Düzenle' : 'Yeni Zaman Girişi' }}</h2>
+    <!-- Kapatma butonu -->
+    <button class="close-button" (click)="onClose()">×</button>
+
+
+    <!-- Formunuzun geri kalanı (ngModel ile) -->
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="date">Tarih</label>
+        <input id="date" type="date" [(ngModel)]="timesheetEntry.date" name="date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="startTime">Başlangıç Saati</label>
+        <input id="startTime" type="time" [(ngModel)]="timesheetEntry.startTime" name="startTime" required>
+      </div>
+
+      <div class="form-group">
+        <label for="endTime">Bitiş Saati</label>
+        <input id="endTime" type="time" [(ngModel)]="timesheetEntry.endTime" name="endTime" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Açıklama</label>
+        <textarea id="description" [(ngModel)]="timesheetEntry.description" name="description" rows="3"></textarea>
+      </div>
+
+      <form (ngSubmit)="onSubmit()">
+        <!-- ... formun geri kalanı aynı ... -->
+        <button type="submit">{{ isEditMode ? 'Güncelle' : 'Kaydet' }}</button>
+      </form>    </form>
+  </div>
+</div>

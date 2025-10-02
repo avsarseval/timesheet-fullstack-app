@@ -35,7 +35,7 @@ public class AdminController {
     @PutMapping("/timesheets/{id}")
     public ResponseEntity<TimesheetResponseDto> adminUpdateTimesheet(
             @PathVariable Long id,
-            @RequestBody TimesheetCreateRequestDto requestDto) { // ARTIK DTO ALIYOR
+            @RequestBody TimesheetCreateRequestDto requestDto) {
 
         TimesheetResponseDto responseDto = adminService.adminUpdateTimesheet(id, requestDto);
         return ResponseEntity.ok(responseDto);

@@ -1,0 +1,51 @@
+<div class="list-container">
+  <div class="header">
+    <h1>Zaman Çizelgelerim</h1>
+    <!-- Bu butona basıldığında modal açılacak -->
+    <button (click)="openModal()">+ Yeni Giriş Ekle</button>
+  </div>
+  <table>
+    <thead>
+    <tr>
+      <th>Tarih</th>
+      <th>Başlangıç</th>
+      <th>Bitiş</th>
+      <th>Açıklama</th>
+      <th>İşlemler</th> <!-- 1. Yeni başlığı ekledik -->
+    </tr>
+    </thead>
+    <tbody>
+      @for (entry of timesheets; track entry.id) { <!-- track by 'id' eklemek en iyi pratiktir -->
+        <tr>
+          <td>{{ entry.date | date: 'dd.MM.yyyy' }}</td>
+          <td>{{ entry.startTime }}</td>
+          <td>{{ entry.endTime }}</td>
+          <td>{{ entry.description }}</td>
+
+          <!-- 2. Yeni hücreyi ve butonları ekledik -->
+          <td class="actions">
+            <button class="edit-btn" (click)="onEdit(entry)">Düzenle</button>
+            <button class="delete-btn" (click)="onDelete(entry.id)">Sil</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <!-- colspan'ı 5'e çıkardık -->
+          <td colspan="5" style="text-align: center;">Gösterilecek zaman çizelgesi kaydı bulunamadı.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- Sadece isModalOpen true ise form bileşenini göster -->
+<!-- (timesheetCreated) olayı tetiklendiğinde onTimesheetCreated() metodunu çalıştır -->
+<!-- (closeModal) olayı tetiklendiğinde closeModal() metodunu çalıştır -->
+<app-timesheet-form
+  *ngIf="isModalOpen"
+  [isEditMode]="isEditMode"
+  [timesheetToEdit]="currentTimesheet"
+  (timesheetCreated)="onTimesheetCreated()"
+  (timesheetUpdated)="onTimesheetUpdated()"
+  (closeModal)="closeModal()">
+</app-timesheet-form>

@@ -1,0 +1,71 @@
+<div class="list-container">
+  <div class="header">
+    <h1>Admin Paneli - Tüm Kayıtlar</h1>
+    <button (click)="exportToCsv()" [disabled]="allTimesheets.length === 0">
+      CSV Olarak İndir
+    </button>
+  </div>
+
+  @if (isLoading) {
+    <p>Veriler yükleniyor...</p>
+  } @else {
+    <table>
+      <thead>
+      <tr>
+        <th>Kullanıcı</th>
+        <th>Tarih</th>
+        <th>Başlangıç</th>
+        <th>Bitiş</th>
+        <th>Açıklama</th>
+        <th>İşlemler</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (entry of allTimesheets; track entry.id) {
+          <tr>
+            <td>{{ entry.username }}</td>
+            <td>{{ entry.date | date: 'dd.MM.yyyy' }}</td>
+            <td>{{ entry.startTime }}</td>
+            <td>{{ entry.endTime }}</td>
+            <td>{{ entry.description }}</td>
+            <td class="actions">
+              <button class="edit-btn" (click)="onEdit(entry)">Düzenle</button>
+              <button class="delete-btn" (click)="onDelete(entry.id)">Sil</button>
+            </td>
+          </tr>
+
+        }@empty {
+          <tr>
+            <td colspan="6">Gösterilecek zaman çizelgesi kaydı bulunamadı.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <!-- ... tablonuzun </table> etiketinden sonra ... -->
+    <app-timesheet-form
+      *ngIf="isModalOpen"
+      [isEditMode]="true"
+      [isAdminContext]="true"
+      [timesheetToEdit]="currentTimesheet"
+      (timesheetUpdated)="onTimesheetUpdated()"
+      (closeModal)="closeModal()">
+    </app-timesheet-form>
+    <app-confirm-box
+      *ngIf="isConfirmModalOpen"
+      message="Bu kaydı kalıcı olarak silmek istediğinizden emin misiniz?"
+      (confirm)="confirmDelete()"
+      (cancel)="closeConfirmModal()">
+    </app-confirm-box>
+    <div class="pagination-controls" *ngIf="!isLoading && totalPages > 1">
+      <button (click)="previousPage()" [disabled]="currentPage === 0">
+        &laquo; Geri
+      </button>
+      <span>
+    Sayfa {{ currentPage + 1 }} / {{ totalPages }}
+  </span>
+      <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1">
+        İleri &raquo;
+      </button>
+    </div>
+  }
+</div>

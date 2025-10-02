@@ -1,0 +1,16 @@
+<nav class="navbar">
+  <div class="navbar-brand">
+    <a routerLink="/timesheet" class="navbar-logo">
+      Timesheet App
+    </a>
+  </div>
+  <div class="navbar-links">
+    <a routerLink="/timesheet" routerLinkActive="active-link">Zaman Çizelgesi</a>
+    @if (authService.isAdmin()) {
+      <a routerLink="/admin" routerLinkActive="active-link">Admin Paneli</a>
+    }    <a (click)="onLogout()" style="cursor: pointer;">Çıkış Yap</a>
+  </div>
+
+
+
+</nav>

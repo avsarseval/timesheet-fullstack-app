@@ -1,0 +1,42 @@
+<!-- 1. Formu ortalamak için ana sarmalayıcıyı ekliyoruz -->
+<div class="login-wrapper">
+
+  <!-- 2. Form konteyneriniz (bu kısım aynı) -->
+  <div class="form-container">
+    <h2>Giriş Yap</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <!-- 3. Gereksiz iç içe div'i temizledik -->
+      <div class="form-group">
+        <label for="username">Kullanıcı Adı</label>
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          placeholder="kullaniciadiniz"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Şifre</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">Giriş Yap</button>
+
+      <div class="form-footer">
+        <!-- Paragraf etiketi eklemek daha semantik ve stil vermesi daha kolaydır -->
+        <p>Hesabın yok mu? <a routerLink="/register">Kayıt Ol</a></p>
+      </div>
+
+    </form>
+  </div>
+
+</div>
